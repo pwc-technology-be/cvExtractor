@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+#ignore CVs
+Christophe.txt
+Frederic.txt
+Emidio.txt
+Janis.txt
+Torsten.txt
