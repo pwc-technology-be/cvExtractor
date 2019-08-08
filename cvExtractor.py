@@ -104,7 +104,7 @@ class FiletoParse:
         self.matchEducation()
         self.matchSkills()
         self.matchLanguages()
-        #self.matchExperience()
+        self.matchExperience()
         self.matchContact()
         #self.matchPhone()
 
@@ -253,7 +253,9 @@ class FiletoParse:
                 continue
             if copy:
                 education = education + str(line)
-        self.infoDict['education'] = education
+            array = education.split('* ')
+            del array[0]
+        self.infoDict['education'] = array
 
 #below code matches skills in CV
     def matchSkills(self):
@@ -263,7 +265,7 @@ class FiletoParse:
             if line.strip() == "Areas of specialization":
                 copy = True
                 continue
-            elif line.strip() == "Areas of specialization":
+            elif line.strip() == "Languages":
                 copy = False
                 continue
             if copy:
@@ -284,6 +286,8 @@ class FiletoParse:
 
         self.infoDict['languages'] = str(languages)
         print(self.infoDict)
+
+
 
 #below code finds email
     def matchContact(self):
