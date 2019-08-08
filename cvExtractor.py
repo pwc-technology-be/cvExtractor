@@ -287,7 +287,23 @@ class FiletoParse:
         self.infoDict['languages'] = str(languages)
         print(self.infoDict)
 
-
+#below code matche experience
+    #needs fixing because it displays more than just experience
+    def matchExperience(self):
+        experience = ''
+        copy = False
+        for line in self.inputString.splitlines():
+            if line.strip() == "Prior professional experience":
+                copy = True
+                continue
+            elif line.strip() == self.infoDict['name']: #i believe this line is at fault- how to call output from another function?
+                copy = False
+                continue
+            if copy:
+                experience = experience + str(line)
+        array = experience.split('* ')
+        del array[0]
+        self.infoDict['experience'] = array
 
 #below code finds email
     def matchContact(self):
