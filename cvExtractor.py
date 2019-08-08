@@ -23,15 +23,15 @@ class exportToJSON:
         headers = ['FILE NAME',
                    'NAME',
                    'ROLE',
-                   'AREA',
-                   'BACKGROUND',
-                   'KEYPROJECTS',
+                   'LOCATION',
+                   'INFO',
+                   'PROJECTS',
                    'INDUSTRY',
                    'EDUCATION',
                    'SKILLS',
                    'LANGUAGES',
                    'EXPERIENCE',
-                   'EMAIL',
+                   'CONTACT',
                    'PHONE',
                    ]
         if not os.path.isfile(fileName) or resetFile:
@@ -51,8 +51,8 @@ class FiletoParse:
 
     def __init__(self, filename, debug=False):
         print("Hello User! Welcome to CV Extractor")
-        fields = ["name", "role", "area", "background", "keyProjects", "industry", "education", "skills", "languages",
-                  "experience", "email", "phone"]
+        fields = ["name", "role", "location", "info", "projects", "industry", "education", "skills", "languages",
+                  "experience", "contact", "phone"]
         self.file = Path(filename)
         self.extension = self.file.suffix
         #print(self.extension)
@@ -95,6 +95,7 @@ class FiletoParse:
         #info is information that goes inside the infoDict from that particular function.
         self.tokens, self.lines, self.sentences = FiletoParse.preprocess(self.inputString)
         self.matchName()
+        #self.meta()
         self.matchRole()
         self.matchLocation()
         self.matchInfo()
@@ -157,6 +158,9 @@ class FiletoParse:
         name = matches
 
         self.infoDict['name'] = str(name)
+
+    # def meta(self):
+    #     meta = ""
 
 #below code finds role in CV
     def matchRole(self):
@@ -232,7 +236,9 @@ class FiletoParse:
                 continue
             if copy:
                 industry = industry + str(line)
-        self.infoDict['industry'] = industry
+        array = industry.split('* ')
+        del array[0]
+        self.infoDict['industry'] = array
 
 #below codes finds education from CV
     def matchEducation(self):
@@ -262,7 +268,9 @@ class FiletoParse:
                 continue
             if copy:
                 skills = skills + str(line)
-        self.infoDict['skills'] = skills
+        array = skills.split('* ')
+        del array[0]
+        self.infoDict['skills'] = array
 
 #below code matches Languages
     def matchLanguages(self):
@@ -299,7 +307,7 @@ if __name__ == "__main__":
     verbose = False
     if "-v" in str(sys.argv):
         verbose = True
-        pathy = '/Users/samareaa/PycharmProjects/cvExtraction/CVs/*.txt'
+        pathy = '/Users/samareaa/PycharmProjects/CVproject/CVs/*.txt'
         text_files = glob.glob(pathy)
 
         files = set(text_files)
