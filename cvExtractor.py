@@ -33,7 +33,7 @@ class exportToJSON:
                    'LANGUAGES',
                    'EXPERIENCE',
                    'CONTACT',
-                   'PHONE',
+                   #'PHONE',
                    ]
         if not os.path.isfile(fileName) or resetFile:
             # Will create/reset the file as per the evaluation of above condition
@@ -53,7 +53,7 @@ class FiletoParse:
     def __init__(self, filename, debug=False):
         print("Hello User! Welcome to CV Extractor")
         fields = ["name", "meta", "location", "info", "projects", "industry", "education", "skills", "languages",
-                  "experience", "contact", "phone"]
+                  "experience", "contact"]
         self.file = Path(filename)
         self.extension = self.file.suffix
         #print(self.extension)
@@ -270,7 +270,9 @@ class FiletoParse:
                 education = education + str(line)
             array = education.split('* ')
             del array[0]
-        self.infoDict['education'] = array
+        #for institution array[-1] and for title array[0] but may not always be case
+        self.infoDict['education'] = {"degree": array, "history": {"institution": array[1::2], "title": array[::2]}}
+
 
 #below code matches skills in CV
     def matchSkills(self):
