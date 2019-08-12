@@ -96,8 +96,8 @@ class FiletoParse:
         #info is information that goes inside the infoDict from that particular function.
         self.tokens, self.lines, self.sentences = FiletoParse.preprocess(self.inputString)
         self.matchName()
-        #self.meta()
-        self.matchRole()
+        self.matchMeta()
+        #self.matchRole()
         self.matchLocation()
         self.matchInfo()
         self.matchProjects()
@@ -165,20 +165,18 @@ class FiletoParse:
 
         self.infoDict['name'] = str(name)
 
-    # def meta(self):
-    #     meta = ""
 
 #below code finds role in CV
-    def matchRole(self):
-        role = ()
-        words1 = set(open("roles.txt").read().split())
-        words2 = set(self.inputString.split())
+    #def matchRole(self):
+        #role = ()
+        #words1 = set(open("roles.txt").read().split())
+        #words2 = set(self.inputString.split())
         # print(self.inputString)
 
-        matches = words1.intersection(words2)
-        role = matches
+        #matches = words1.intersection(words2)
+        #role = matches
 
-        self.infoDict['info'] = {"label": str(role)}
+        #self.infoDict['info'] = {"brief": '', "label": str(role)}
 
 #below code finds area in CV
     def matchLocation(self):
@@ -194,6 +192,7 @@ class FiletoParse:
 
 #below code finds background in CV
     def matchInfo(self):
+        #matching brief (aka background)
         copy = False
         background = ''
         for line in self.inputString.splitlines():
@@ -208,7 +207,17 @@ class FiletoParse:
                 continue
             if copy:
                 background = background + str(line)
-        self.infoDict['info'] = {"brief": background}
+
+        #matching role aka label
+        role = ()
+        words1 = set(open("roles.txt").read().split())
+        words2 = set(self.inputString.split())
+        # print(self.inputString)
+
+        matches = words1.intersection(words2)
+        role = matches
+
+        self.infoDict['info'] = {"label": (str(role)), "brief": background}
 
 #bwloe code finds keyprojects in CV
     def matchProjects(self):
