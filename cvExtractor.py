@@ -327,7 +327,7 @@ class FiletoParse:
         email = ''
         for line in self.inputString.splitlines():
             if re.findall(r'[\w\.-]+@[\w\.-]+', line):
-                email = email + str(line.replace('*', ''))
+                email = email + str(line.replace('* ', ''))
         self.infoDict['contact'] = {"email": email}
 
 #below code finds phone
