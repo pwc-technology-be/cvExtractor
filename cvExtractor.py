@@ -31,7 +31,7 @@ class exportToJSON:
                    'EDUCATION',
                    'SKILLS',
                    'LANGUAGES',
-                   'EXPERIENCE',
+                   'EMPLOYMENT',
                    'CONTACT',
                    #'PHONE',
                    ]
@@ -53,7 +53,7 @@ class FiletoParse:
     def __init__(self, filename, debug=False):
         print("Hello User! Welcome to CV Extractor")
         fields = ["name", "meta", "location", "info", "projects", "industry", "education", "skills", "languages",
-                  "experience", "contact"]
+                  "employment", "contact"]
         self.file = Path(filename)
         self.extension = self.file.suffix
         #print(self.extension)
@@ -289,7 +289,7 @@ class FiletoParse:
                 skills = skills + str(line)
         array = skills.split('* ')
         del array[0]
-        self.infoDict['skills'] = array
+        self.infoDict['skills'] = array, {'name': self.infoDict.get('info', {}).get('label')}
 
 #below code matches Languages
     def matchLanguages(self):
@@ -320,7 +320,7 @@ class FiletoParse:
                 experience = experience + str(line)
         array = experience.split('* ')
         del array[0]
-        self.infoDict['experience'] = array
+        self.infoDict['employment'] = {'summary': array}
 
 #below code finds email
     def matchContact(self):
