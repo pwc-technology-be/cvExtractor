@@ -271,7 +271,7 @@ class FiletoParse:
             array = education.split('* ')
             del array[0]
         #for institution array[-1] and for title array[0] but may not always be case
-        self.infoDict['education'] = {"degree": array, "history": {"institution": array[1::2], "title": array[::2]}}
+        self.infoDict['education'] = {"summary": array, "degree": ' '.join(array[0:1]), "history": [{"institution": array[1::2], "title": array[::2]}]}
 
 
 #below code matches skills in CV
