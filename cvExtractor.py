@@ -3,6 +3,7 @@ from pprint import pprint
 from pathlib import Path
 import json
 
+
 # from json import dumps, loads, JSONEncoder, JSONDecoder
 # import pickle
 #
@@ -22,6 +23,7 @@ class exportToJSON:
     def __init__(self, fileName='results.txt', resetFile=False):
         headers = ['FILE NAME',
                    'NAME',
+                   'META',
                    'ROLE',
                    'LOCATION',
                    'INFO',
@@ -51,7 +53,7 @@ class FiletoParse:
 
     def __init__(self, filename, debug=False):
         print("Hello User! Welcome to CV Extractor")
-        fields = ["name", "role", "location", "info", "projects", "industry", "education", "skills", "languages",
+        fields = ["name", "meta", "role", "location", "info", "projects", "industry", "education", "skills", "languages",
                   "experience", "contact", "phone"]
         self.file = Path(filename)
         self.extension = self.file.suffix
@@ -106,6 +108,7 @@ class FiletoParse:
         self.matchLanguages()
         self.matchExperience()
         self.matchContact()
+        self.matchMeta()
         #self.matchPhone()
 
         # csv = exportToJSON()
@@ -146,6 +149,10 @@ class FiletoParse:
             return self.tokens, self.lines, self.sentences
         except Exception as e:
             print(e)
+
+#meta
+    def matchMeta(self):
+        self.infoDict['meta'] = {"format": "FRESH@1.0.0"}
 
 #below code finds name from CV
     def matchName(self):
@@ -296,7 +303,7 @@ class FiletoParse:
             if line.strip() == "Prior professional experience":
                 copy = True
                 continue
-            elif line.strip() == self.infoDict['name']: #i believe this line is at fault- how to call output from another function?
+            elif line.strip() == self.infoDict['name']: #i believe this line is at fault- how to call output from another function?l
                 copy = False
                 continue
             if copy:
