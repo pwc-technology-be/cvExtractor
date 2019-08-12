@@ -161,7 +161,7 @@ class FiletoParse:
         words2 = set(self.inputString.split())
         # find intersection between both texts (i.e detect name)
         matches = words1.intersection(words2)
-        name = matches
+        name = ' '.join(matches)
 
         self.infoDict['name'] = str(name)
 
@@ -186,7 +186,7 @@ class FiletoParse:
         # print(self.inputString)
 
         matches = words1.intersection(words2)
-        area = matches
+        area = ' '.join(matches)
         self.infoDict['location'] = {"region": str(area)}
         #print(self.infoDict)
 
@@ -215,7 +215,7 @@ class FiletoParse:
         # print(self.inputString)
 
         matches = words1.intersection(words2)
-        role = matches
+        role = ' '.join(matches)
 
         self.infoDict['info'] = {"label": (str(role)), "brief": background}
 
@@ -327,9 +327,8 @@ class FiletoParse:
         email = ''
         for line in self.inputString.splitlines():
             if re.findall(r'[\w\.-]+@[\w\.-]+', line):
-                email = email + str(line)
-                print(email)
-        self.infoDict['contact'] = {"email" : email}
+                email = email + str(line.replace('*', ''))
+        self.infoDict['contact'] = {"email": email}
 
 #below code finds phone
     def matchPhone(self):
