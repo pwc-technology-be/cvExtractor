@@ -24,7 +24,6 @@ class exportToJSON:
         headers = ['FILE NAME',
                    'NAME',
                    'META',
-                   'ROLE',
                    'LOCATION',
                    'INFO',
                    'PROJECTS',
@@ -53,7 +52,7 @@ class FiletoParse:
 
     def __init__(self, filename, debug=False):
         print("Hello User! Welcome to CV Extractor")
-        fields = ["name", "meta", "role", "location", "info", "projects", "industry", "education", "skills", "languages",
+        fields = ["name", "meta", "location", "info", "projects", "industry", "education", "skills", "languages",
                   "experience", "contact", "phone"]
         self.file = Path(filename)
         self.extension = self.file.suffix
@@ -179,7 +178,7 @@ class FiletoParse:
         matches = words1.intersection(words2)
         role = matches
 
-        self.infoDict['role'] = str(role)
+        self.infoDict['info'] = {"label": str(role)}
 
 #below code finds area in CV
     def matchLocation(self):
@@ -190,7 +189,7 @@ class FiletoParse:
 
         matches = words1.intersection(words2)
         area = matches
-        self.infoDict['location'] = str(area)
+        self.infoDict['location'] = {"region": str(area)}
         #print(self.infoDict)
 
 #below code finds background in CV
@@ -209,7 +208,7 @@ class FiletoParse:
                 continue
             if copy:
                 background = background + str(line)
-        self.infoDict['info'] = background
+        self.infoDict['info'] = {"brief": background}
 
 #bwloe code finds keyprojects in CV
     def matchProjects(self):
@@ -319,7 +318,7 @@ class FiletoParse:
             if re.findall(r'[\w\.-]+@[\w\.-]+', line):
                 email = email + str(line)
                 print(email)
-        self.infoDict['contact'] = email
+        self.infoDict['contact'] = {"email" : email}
 
 #below code finds phone
     def matchPhone(self):
