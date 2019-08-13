@@ -270,8 +270,24 @@ class FiletoParse:
                 education = education + str(line)
             array = education.split('* ')
             del array[0]
+            institone = array[1:2:2]
+            titleone = array[0:1:2]
+            if len(array) > 3:
+                institwo = array[3:4:2]
+                titletwo = array[2:3:2]
+            else:
+                institwo = None
+                titletwo = None
+            if len(array) > 4:
+                instithree = array[5:6:2]
+                titlethree = array[4:5:2]
+            else:
+                instithree = None
+                titlethree = None
+
+
         #for institution array[-1] and for title array[0] but may not always be case
-        self.infoDict['education'] = {"summary": array, "degree": ' '.join(array[0:1]), "history": [{"institution": array[1:2:2], "title": array[0:1:2]}, {"institution": array[3::2], "title": array[2::2]}]}
+        self.infoDict['education'] = {"summary": array, "degree": ' '.join(array[0:1]), "history": [{"institution": institone, "title": titleone}, {"institution": institwo, "title": titletwo}, {"institution": instithree, "title": titlethree}]}
 
 
 #below code matches skills in CV
