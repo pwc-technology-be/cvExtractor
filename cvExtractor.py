@@ -2,6 +2,7 @@ import glob, nltk, os, sys, re  # ,code
 # from pprint import pprint
 from pathlib import Path
 import json
+from datetime import datetime
 
 
 
@@ -218,8 +219,8 @@ class FiletoParse:
                 continue
             if copy:
                 keyProject = re.sub('\u2013', '-', keyProject + str(line))
-        #array = re.compile('((0|1)\d{1})/((0|1|2)\d{1})/((19|20)\d{2})').split(keyProject)
-        array = keyProject.split('\n \n')
+        array = re.compile('\d{1,2}\/\d{1,2}\/\d{4}').split(keyProject) # this line is faulty, but I need to split by date to manage the projects
+        # array = keyProject.split('2019')
         self.infoDict['projects'] = array
 
                 # if self.debug:
@@ -304,7 +305,6 @@ class FiletoParse:
         languages = matches
 
         self.infoDict['languages'] = str(languages)
-        print(self.infoDict)
 
 # below code matche experience
     # needs fixing because it displays more than just experience
