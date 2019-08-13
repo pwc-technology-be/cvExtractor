@@ -219,7 +219,7 @@ class FiletoParse:
                 continue
             if copy:
                 keyProject = re.sub('\u2013', '-', keyProject + str(line))
-        array = re.compile('\d{1,2}\/\d{1,2}\/\d{4}').split(keyProject) # this line is faulty, but I need to split by date to manage the projects
+        array = re.split('(\d{1,2}\/\d{1,2}\/\d{4} - \d{1,2}\/\d{1,2}\/\d{4})', keyProject)# .split(keyProject) # this line is faulty, but I need to split by date to manage the projects
         # array = keyProject.split('2019')
         self.infoDict['projects'] = array
 
