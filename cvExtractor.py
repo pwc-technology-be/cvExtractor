@@ -1,23 +1,8 @@
-import glob, nltk, os, code, sys, re
-from pprint import pprint
+import glob, nltk, os, sys, re  # ,code
+# from pprint import pprint
 from pathlib import Path
 import json
 
-
-
-# from json import dumps, loads, JSONEncoder, JSONDecoder
-# import pickle
-#
-# class PythonObjectEncoder(JSONEncoder):
-#     def default(self, obj):
-#         if isinstance(obj, (list, dict, str, int, float, bool, type(None))):
-#             return JSONEncoder.default(self, obj)
-#         return {'_python_object': pickle.dumps(obj)}
-#
-# def as_python_object(dct):
-#     if '_python_object' in dct:
-#         return pickle.loads(str(dct['_python_object']))
-#     return dct
 
 
 class exportToJSON:
@@ -34,16 +19,16 @@ class exportToJSON:
                    'LANGUAGES',
                    'EMPLOYMENT',
                    'CONTACT',
-                   #'PHONE',
+                   # 'PHONE',
                    ]
         if not os.path.isfile(fileName) or resetFile:
             # Will create/reset the file as per the evaluation of above condition
             fOut = open(fileName, 'w')
             fOut.close()
-        fIn = open(fileName)  #Open file if file already present
-        inputString = fIn.read() #inString or inputString..help
+        fIn = open(fileName)  # Open file if file already present
+        inputString = fIn.read() # inString or inputString..help
         fIn.close()
-        if len(inputString) <= 0:  #If File already exsists but is empty, it adds the header
+        if len(inputString) <= 0:  # If File already exsists but is empty, it adds the header
             fOut = open(fileName, 'w')
             fOut.write(','.join(headers) + '\n')
             fOut.close()
@@ -57,7 +42,7 @@ class FiletoParse:
                   "employment", "contact"]
         self.file = Path(filename)
         self.extension = self.file.suffix
-        #print(self.extension)
+        # print(self.extension)
         self.debug = debug
         self.information = []
         self.readFile()
@@ -68,20 +53,20 @@ class FiletoParse:
 
     def write(self):
         # Individual elements are dictionaries
-        #writeString = ''
-        #with open('totalResultsCSV.csv', 'a') as fOut:
-            #writeString += str(self.infoDict['fileName']) + ','
-            #writeString += str(self.infoDict['name']) + ','
-            #writeString += str(self.infoDict['role']) + ','
-            #fOut.write(writeString)
+        # writeString = ''
+        # with open('totalResultsCSV.csv', 'a') as fOut:
+            # writeString += str(self.infoDict['fileName']) + ','
+            # writeString += str(self.infoDict['name']) + ','
+            # writeString += str(self.infoDict['role']) + ','
+            # fOut.write(writeString)
         with open('results_' + self.file.stem + '.json', 'w') as fOut:
-            #writeString += str(infoDict['fileName']) + ','
-            #writeString += str(infoDict['name']) + ','
-            #writeString += str(infoDict['role']) + ','
+            # writeString += str(infoDict['fileName']) + ','
+            # writeString += str(infoDict['name']) + ','
+            # writeString += str(infoDict['role']) + ','
             fOut.write(json.dumps(self.infoDict, indent=4, sort_keys=True))
 
     def readFile(self):
-        #self.extension = self.file.suffix
+        # self.extension = self.file.suffix
         if self.extension == ".txt":
             f = open(self.file, 'r', encoding='utf-8')
             self.inputString = f.read()
@@ -91,14 +76,14 @@ class FiletoParse:
             self.inputString = None
 
     def processFile(self,):
-        #self.inputString, info['extension'] = self.readFile(f)
-        #info['fileName'] = f
+        # self.inputString, info['extension'] = self.readFile(f)
+        # info['fileName'] = f
 
-        #info is information that goes inside the infoDict from that particular function.
+        # info is information that goes inside the infoDict from that particular function.
         self.tokens, self.lines, self.sentences = FiletoParse.preprocess(self.inputString)
         self.matchName()
         self.matchMeta()
-        #self.matchRole()
+        # self.matchRole()
         self.matchLocation()
         self.matchInfo()
         self.matchProjects()
@@ -109,7 +94,7 @@ class FiletoParse:
         self.matchExperience()
         self.matchContact()
         self.matchMeta()
-        #self.matchPhone()
+        # self.matchPhone()
 
         # csv = exportToJSON()
         # csv.write(info)
@@ -150,11 +135,11 @@ class FiletoParse:
         except Exception as e:
             print(e)
 
-#meta
+# meta
     def matchMeta(self):
         self.infoDict['meta'] = {"format": "FRESH@1.0.0"}
 
-#below code finds name from CV
+# below code finds name from CV
     def matchName(self):
         name = ()
             # open and read both files for comparison
@@ -167,19 +152,19 @@ class FiletoParse:
         self.infoDict['name'] = str(name)
 
 
-#below code finds role in CV
-    #def matchRole(self):
-        #role = ()
-        #words1 = set(open("roles.txt").read().split())
-        #words2 = set(self.inputString.split())
-        # print(self.inputString)
+# below code finds role in CV
+    # def matchRole(self):
+        # role = ()
+        # words1 = set(open("roles.txt").read().split())
+        # words2 = set(self.inputString.split())
+        #  print(self.inputString)
 
-        #matches = words1.intersection(words2)
-        #role = matches
+        # matches = words1.intersection(words2)
+        # role = matches
 
-        #self.infoDict['info'] = {"brief": '', "label": str(role)}
+        # self.infoDict['info'] = {"brief": '', "label": str(role)}
 
-#below code finds area in CV
+# below code finds area in CV
     def matchLocation(self):
         area = ()
         words1 = set(open("locations.txt").read().split())
@@ -189,11 +174,11 @@ class FiletoParse:
         matches = words1.intersection(words2)
         area = ' '.join(matches)
         self.infoDict['location'] = {"region": str(area)}
-        #print(self.infoDict)
+        # print(self.infoDict)
 
-#below code finds background in CV
+# below code finds background in CV
     def matchInfo(self):
-        #matching brief (aka background)
+        # matching brief (aka background)
         copy = False
         background = ''
         for line in self.inputString.splitlines():
@@ -209,7 +194,7 @@ class FiletoParse:
             if copy:
                 background = background + str(line)
 
-        #matching role aka label
+        # matching role aka label
         role = ()
         words1 = set(open("roles.txt").read().split())
         words2 = set(self.inputString.split())
@@ -220,7 +205,7 @@ class FiletoParse:
 
         self.infoDict['info'] = {"label": (str(role)), "brief": background}
 
-#bwloe code finds keyprojects in CV
+# below code finds keyProjects in CV
     def matchProjects(self):
         keyProject = ''
         copy = False
@@ -233,7 +218,8 @@ class FiletoParse:
                 continue
             if copy:
                 keyProject = re.sub('\u2013', '-', keyProject + str(line))
-        array = keyProject.split('\"')
+        #array = re.compile('((0|1)\d{1})/((0|1|2)\d{1})/((19|20)\d{2})').split(keyProject)
+        array = keyProject.split('\n \n')
         self.infoDict['projects'] = array
 
                 # if self.debug:
@@ -241,7 +227,7 @@ class FiletoParse:
                 #     code.interact(local=locals())
                 #     return background
 
-#below code finds industry experience in CV
+# below code finds industry experience in CV
     def matchIndustry(self):
         industry = ''
         copy = False
@@ -258,7 +244,7 @@ class FiletoParse:
         del array[0]
         self.infoDict['industry'] = array
 
-#below codes finds education from CV
+# below codes finds education from CV
     def matchEducation(self):
         education = ''
         copy = False
@@ -287,13 +273,10 @@ class FiletoParse:
             else:
                 instithree = None
                 titlethree = None
-
-
-        #for institution array[-1] and for title array[0] but may not always be case
         self.infoDict['education'] = {"summary": array, "degree": ' '.join(array[0:1]), "history": [{"institution": institone, "title": titleone}, {"institution": institwo, "title": titletwo}, {"institution": instithree, "title": titlethree}]}
 
 
-#below code matches skills in CV
+# below code matches skills in CV
     def matchSkills(self):
         skills = ''
         copy = False
@@ -308,9 +291,9 @@ class FiletoParse:
                 skills = skills + str(line)
         array = skills.split('* ')
         del array[0]
-        self.infoDict['skills'] = {'sets': array, 'name': self.infoDict.get('info', {}).get('label')}
+        self.infoDict['skills'] = {'sets': [{'skills': array, 'name': self.infoDict.get('info', {}).get('label')}]}
 
-#below code matches Languages
+# below code matches Languages
     def matchLanguages(self):
         languages = ()
         words1 = set(open("languages.txt").read().split())
@@ -323,8 +306,8 @@ class FiletoParse:
         self.infoDict['languages'] = str(languages)
         print(self.infoDict)
 
-#below code matche experience
-    #needs fixing because it displays more than just experience
+# below code matche experience
+    # needs fixing because it displays more than just experience
     def matchExperience(self):
         experience = ''
         copy = False
@@ -332,7 +315,7 @@ class FiletoParse:
             if line.strip() == "Prior professional experience":
                 copy = True
                 continue
-            elif line.strip() == self.infoDict['name']: #i believe this line is at fault- how to call output from another function?l
+            elif line.strip() == self.infoDict['name']:
                 copy = False
                 continue
             if copy:
@@ -341,7 +324,7 @@ class FiletoParse:
         del array[0]
         self.infoDict['employment'] = {'summary': array}
 
-#below code finds email
+# below code finds email
     def matchContact(self):
         email = ''
         for line in self.inputString.splitlines():
@@ -349,14 +332,15 @@ class FiletoParse:
                 email = email + str(line.replace('* ', ''))
         self.infoDict['contact'] = {"email": email}
 
-#below code finds phone
-    def matchPhone(self):
-        phone = ''
-        for line in self.inputString.splitlines():
-            if re.findall(r'(/^((\+|00)32\s?|0)4(60|[789]\d)(\s?\d{2}){3}$/)', line):
-                phone = phone + str(line)
-                print(phone)
-        self.infoDict['phone'] = phone
+# below code finds phone
+    # def matchPhone(self):
+        # phone = ''
+        # for line in self.inputString.splitlines():
+            # f re.findall(r'(/^((\+|00)32\s?|0)4(60|[789]\d)(\s?\d{2}){3}$/)', line):
+                # phone = phone + str(line)
+                # print(phone)
+        # self.infoDict['phone'] = phone
+
 
 if __name__ == "__main__":
     verbose = False
