@@ -4,6 +4,7 @@ from pathlib import Path
 import json
 
 
+
 # from json import dumps, loads, JSONEncoder, JSONDecoder
 # import pickle
 #
@@ -82,7 +83,7 @@ class FiletoParse:
     def readFile(self):
         #self.extension = self.file.suffix
         if self.extension == ".txt":
-            f = open(self.file, 'r')
+            f = open(self.file, 'r', encoding='utf-8')
             self.inputString = f.read()
             f.close()
         else:
@@ -231,8 +232,10 @@ class FiletoParse:
                 copy = False
                 continue
             if copy:
-                keyProject = keyProject + str(line)
-        self.infoDict['projects'] = keyProject
+                keyProject = re.sub('\u2013', '-', keyProject + str(line))
+        array = keyProject.split('\"')
+        self.infoDict['projects'] = array
+
                 # if self.debug:
                 #     print("\n", pprint(self.infoDict), "\n")
                 #     code.interact(local=locals())
@@ -305,7 +308,7 @@ class FiletoParse:
                 skills = skills + str(line)
         array = skills.split('* ')
         del array[0]
-        self.infoDict['skills'] = array, {'name': self.infoDict.get('info', {}).get('label')}
+        self.infoDict['skills'] = {'sets': array, 'name': self.infoDict.get('info', {}).get('label')}
 
 #below code matches Languages
     def matchLanguages(self):
