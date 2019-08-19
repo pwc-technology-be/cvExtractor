@@ -51,6 +51,7 @@ class FiletoParse:
         self.tokens = []
         self.lines = []
         self.sentences = []
+        self.projects = {}
 
     def write(self):
         # Individual elements are dictionaries
@@ -95,6 +96,7 @@ class FiletoParse:
         self.matchExperience()
         self.matchContact()
         self.matchMeta()
+
         # self.matchPhone()
 
         # csv = exportToJSON()
@@ -218,10 +220,19 @@ class FiletoParse:
                 copy = False
                 continue
             if copy:
-                keyProject = re.sub('\u2013', '-', keyProject + str(line))
-        array = re.split('(\d{1,2}\/\d{1,2}\/\d{4} - \d{1,2}\/\d{1,2}\/\d{4})', keyProject)# .split(keyProject) # this line is faulty, but I need to split by date to manage the projects
-        # array = keyProject.split('2019')
-        self.infoDict['projects'] = array
+                keyProject = re.sub('\u2013', '-', keyProject + "\n" + str(line))
+        array = keyProject.split('\n\n\n')
+        del array[-1]
+        for i in range(len(array)):
+            array[i] = re.sub('\n\n', '\n', array[i])
+            array[i] = re.sub('^[\n]*', '', array[i])
+            newarray = array[i].split('\n')
+            print(i)
+            self.infoDict['projects'] = [{'tile': t, 'role': r, 'date': s, 'description': d} for t, r, s, d in [newarray[i: i + 4] for i in range(0, len(newarray), 4)]]
+
+
+
+
 
                 # if self.debug:
                 #     print("\n", pprint(self.infoDict), "\n")
