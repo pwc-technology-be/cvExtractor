@@ -6,6 +6,8 @@ from datetime import datetime
 
 
 
+
+
 class exportToJSON:
     def __init__(self, fileName='results.txt', resetFile=False):
         headers = ['FILE NAME',
@@ -52,6 +54,7 @@ class FiletoParse:
         self.lines = []
         self.sentences = []
         self.temparray = []
+        self.langarray = []
 
     def write(self):
         # Individual elements are dictionaries
@@ -97,6 +100,7 @@ class FiletoParse:
         self.matchContact()
         self.matchMeta()
 
+
         # self.matchPhone()
 
         # csv = exportToJSON()
@@ -137,6 +141,17 @@ class FiletoParse:
             return self.tokens, self.lines, self.sentences
         except Exception as e:
             print(e)
+
+    def getStartDate(self, s):
+        startDate = s.split(' -')[0]
+        array = startDate.split('/')
+        return array[2] + '-' + array[0] + '-' + array[1]
+
+
+    def getEndDate(self, s):
+        endDate = s.split('- ')[1]
+        array = endDate.split('/')
+        return array[2] + '-' + array[0] + '-' + array[1]
 
 # meta
     def matchMeta(self):
@@ -226,10 +241,13 @@ class FiletoParse:
         for i in range(len(array)):
             array[i] = re.sub('\n\n', '\n', array[i])
             array[i] = re.sub('^[\n]*', '', array[i])
-            newarray = array[i].split('\n')
-            self.temparray = self.temparray + [{'tile': t, 'role': r, 'date': s, 'description': d} for t, r, s, d in [newarray[i: i + 4] for i in range(0, len(newarray), 4)]]
+            lastarray = array[i].split('\n')
+
+            self.temparray = self.temparray + [{'title': t, 'role': r, 'start': self.getStartDate(s), 'end': self.getEndDate(s), 'summary': d} for t, r, s, d in [lastarray[i: i + 4] for i in range(0, len(lastarray), 4)]]
             print(i)
         self.infoDict['projects'] = self.temparray
+
+
 
 
 
@@ -314,9 +332,16 @@ class FiletoParse:
         # print(self.inputString)
 
         matches = words1.intersection(words2)
-        languages = matches
+        languages = str(matches)
+        array = languages.split(',')
+        for i in range(len(array)):
+            array[i] = re.sub('\'', '', array[i])
+            array[i] = re.sub('{', '', array[i])
+            array[i] = re.sub('}', '', array[i])
+            print('Language Array has length:' + str(len(array)))
+            self.langarray = self.langarray + [{'language': el} for el in [array[i: i + 1]]]
 
-        self.infoDict['languages'] = str(languages)
+        self.infoDict['languages'] = self.langarray
 
 # below code matche experience
     # needs fixing because it displays more than just experience
