@@ -51,7 +51,7 @@ class FiletoParse:
         self.tokens = []
         self.lines = []
         self.sentences = []
-        self.projects = {}
+        self.temparray = []
 
     def write(self):
         # Individual elements are dictionaries
@@ -227,8 +227,9 @@ class FiletoParse:
             array[i] = re.sub('\n\n', '\n', array[i])
             array[i] = re.sub('^[\n]*', '', array[i])
             newarray = array[i].split('\n')
+            self.temparray = self.temparray + [{'tile': t, 'role': r, 'date': s, 'description': d} for t, r, s, d in [newarray[i: i + 4] for i in range(0, len(newarray), 4)]]
             print(i)
-            self.infoDict['projects'] = [{'tile': t, 'role': r, 'date': s, 'description': d} for t, r, s, d in [newarray[i: i + 4] for i in range(0, len(newarray), 4)]]
+        self.infoDict['projects'] = self.temparray
 
 
 
