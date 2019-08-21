@@ -2,7 +2,25 @@ import glob, nltk, os, sys, re  # ,code
 # from pprint import pprint
 from pathlib import Path
 import json
-from datetime import datetime
+
+'''
+CV Extractor does exactly what the name suggests: Extracts various information from a given CV
+For now, it only works to extract from a CV in txt file format, but this can be altered in FileToParse class.
+
+It uses pattern matching methods such as file comparison and extraction between two strings to find various pieces of 
+information from the CV. 
+
+Once extracted, it produces an outfile in JSON format for each individual CV conforming to the FRESH schema in order to
+transfer the extracted information to a new template.
+The FRESH schema can be found here:
+https://github.com/fresh-standard/fresh-resume-schema/blob/master/schema/fresh-resume-schema_1.0.0-beta.json
+
+Issues/Bugs with the code have been identified on a separate Sheets file with given access to Christophe Cop or Adriana. 
+Access can be requested.
+ 
+Date: 08/2019
+Author: Adriana Samareanu @samareaa
+'''
 
 
 
@@ -31,7 +49,7 @@ class exportToJSON:
         fIn = open(fileName)  # Open file if file already present
         inputString = fIn.read() # inString or inputString..help
         fIn.close()
-        if len(inputString) <= 0:  # If File already exsists but is empty, it adds the header
+        if len(inputString) <= 0:  # If File already exists but is empty, it adds the header
             fOut = open(fileName, 'w')
             fOut.write(','.join(headers) + '\n')
             fOut.close()
@@ -99,8 +117,6 @@ class FiletoParse:
         self.matchExperience()
         self.matchContact()
         self.matchMeta()
-
-
         # self.matchPhone()
 
         # csv = exportToJSON()
@@ -109,6 +125,8 @@ class FiletoParse:
         # print(info)
 
     @staticmethod
+    #this static method is faulty and does not run, nonetheless information is extracted well
+    #keeping it for future purposes should input formats be different to now.
     def preprocess(document):
         try:
 
@@ -142,22 +160,23 @@ class FiletoParse:
         except Exception as e:
             print(e)
 
-    def getStartDate(self, s):
+    def getStartDate(self, s): #method for matchProject
         startDate = s.split(' -')[0]
         array = startDate.split('/')
         return array[2] + '-' + array[0] + '-' + array[1]
 
 
-    def getEndDate(self, s):
+    def getEndDate(self, s): #method for matchProject
         endDate = s.split('- ')[1]
         array = endDate.split('/')
         return array[2] + '-' + array[0] + '-' + array[1]
 
 # meta
-    def matchMeta(self):
+    def matchMeta(self): #method to create default required FRESH
         self.infoDict['meta'] = {"format": "FRESH@1.0.0"}
 
-# below code finds name from CV
+# below code finds name from CV with file comparison matching
+    #one issue from this is that the order of names is not always correct (unordered array)
     def matchName(self):
         name = ()
             # open and read both files for comparison
