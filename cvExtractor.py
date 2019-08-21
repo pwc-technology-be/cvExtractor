@@ -125,8 +125,8 @@ class FiletoParse:
         # print(info)
 
     @staticmethod
-    #this static method is faulty and does not run, nonetheless information is extracted well
-    #keeping it for future purposes should input formats be different to now.
+    # this static method is faulty and does not run, nonetheless information is extracted well
+    # keeping it for future purposes should input formats be different to now.
     def preprocess(document):
         try:
 
@@ -160,26 +160,26 @@ class FiletoParse:
         except Exception as e:
             print(e)
 
-    def getStartDate(self, s): #method for matchProject
+    def getStartDate(self, s): # method for matchProject
         startDate = s.split(' -')[0]
         array = startDate.split('/')
         return array[2] + '-' + array[0] + '-' + array[1]
 
 
-    def getEndDate(self, s): #method for matchProject
+    def getEndDate(self, s): # method for matchProject
         endDate = s.split('- ')[1]
         array = endDate.split('/')
         return array[2] + '-' + array[0] + '-' + array[1]
 
 # meta
-    def matchMeta(self): #method to create default required FRESH
+    def matchMeta(self): # method to create default required FRESH
         self.infoDict['meta'] = {"format": "FRESH@1.0.0"}
 
 # below code finds name from CV with file comparison matching
-    #one issue from this is that the order of names is not always correct (unordered array)
+    # one issue from this is that the order of names is not always correct (unordered array)
     def matchName(self):
         name = ()
-            # open and read both files for comparison
+        # open and read both files for comparison
         words1 = set(open("names.txt").read().split())
         words2 = set(self.inputString.split())
         # find intersection between both texts (i.e detect name)
@@ -295,6 +295,8 @@ class FiletoParse:
         self.infoDict['industry'] = array
 
 # below codes finds education from CV
+    # now this code is limited to 4 degrees & institutions (will output a summary of all if more than 4 though)
+    # ideally, code should be altered to adjust to however many degrees there are in a CV
     def matchEducation(self):
         education = ''
         copy = False
@@ -309,6 +311,7 @@ class FiletoParse:
                 education = education + str(line)
             array = education.split('* ')
             del array[0]
+
             institone = array[1:2:2]
             titleone = array[0:1:2]
             if len(array) > 3:
@@ -323,7 +326,14 @@ class FiletoParse:
             else:
                 instithree = None
                 titlethree = None
-        self.infoDict['education'] = {"summary": array, "degree": ' '.join(array[0:1]), "history": [{"institution": institone, "title": titleone}, {"institution": institwo, "title": titletwo}, {"institution": instithree, "title": titlethree}]}
+            if len(array) > 5:
+                instifour = array[7:8:2]
+                titlefour = array[6:7:2]
+            else:
+                instifour = None
+                titlefour = None
+
+        self.infoDict['education'] = {"summary": array, "degree": ' '.join(array[0:1]), "history": [{"institution": institone, "title": titleone}, {"institution": institwo, "title": titletwo}, {"institution": instithree, "title": titlethree}, {"institution": instifour, "title": titlefour}]}
 
 
 # below code matches skills in CV
@@ -357,8 +367,9 @@ class FiletoParse:
             array[i] = re.sub('\'', '', array[i])
             array[i] = re.sub('{', '', array[i])
             array[i] = re.sub('}', '', array[i])
-            print('Language Array has length:' + str(len(array)))
-            self.langarray = self.langarray + [{'language': el} for el in [array[i: i + 1]]]
+            array[i] = re.sub('^[ ]*', '', array[i])
+            # print('Language Array has length:' + str(len(array)))
+            self.langarray = self.langarray + [{'language': el} for el in [str(array[i: i + 1])]]
 
         self.infoDict['languages'] = self.langarray
 
@@ -392,7 +403,7 @@ class FiletoParse:
     # def matchPhone(self):
         # phone = ''
         # for line in self.inputString.splitlines():
-            # f re.findall(r'(/^((\+|00)32\s?|0)4(60|[789]\d)(\s?\d{2}){3}$/)', line):
+            # re.findall(r'(/^((\+|00)32\s?|0)4(60|[789]\d)(\s?\d{2}){3}$/)', line):
                 # phone = phone + str(line)
                 # print(phone)
         # self.infoDict['phone'] = phone
