@@ -163,13 +163,15 @@ class FiletoParse:
     def getStartDate(self, s): # method for matchProject
         startDate = s.split(' -')[0]
         array = startDate.split('/')
-        return array[2] + '-' + array[0] + '-' + array[1]
+        # return array[2] + '-' + array[0] + '-' + array[1] <= old format on talentlink
+        return array[2] + '-' + array[1] + '-' + array[0]
 
 
     def getEndDate(self, s): # method for matchProject
         endDate = s.split('- ')[1]
         array = endDate.split('/')
-        return array[2] + '-' + array[0] + '-' + array[1]
+        # return array[2] + '-' + array[0] + '-' + array[1] <= old format on talentlink
+        return array[2] + '-' + array[1] + '-' + array[0]
 
 # meta
     def matchMeta(self): # method to create default required FRESH
@@ -435,6 +437,7 @@ if __name__ == "__main__":
     verbose = False
     if "-v" in str(sys.argv):
         verbose = True
+        # below is a hard variable, and it needs to be dynamic for every user...
         pathy = '/Users/samareaa/PycharmProjects/CVproject/CVs/*.txt'
         text_files = glob.glob(pathy)
 
