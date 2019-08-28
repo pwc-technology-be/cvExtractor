@@ -4,7 +4,7 @@ Michiel De Keyzer
 Nicolas Loozen
 Vladyslava Simonova
 Riaan van der Merwe
-Frédéric Taquin
+Frederic Taquin
 Max Stahlecker
 Olivier Jacqmotte
 Dick Van Bladel

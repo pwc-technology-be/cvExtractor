@@ -91,7 +91,7 @@ class FiletoParse:
     def readFile(self):
         # self.extension = self.file.suffix
         if self.extension == ".txt":
-            f = open(self.file, 'r', encoding='utf-8')
+            f = open(self.file, 'r', encoding='utf8')
             self.inputString = f.read()
             f.close()
         else:
@@ -129,7 +129,7 @@ class FiletoParse:
     # keeping it for future purposes should input formats be different to now.
     def preprocess(document):
         try:
-
+            #get rid of special characters
             try:
                 document = document.decode('ascii', 'ignore')
             except:
@@ -312,28 +312,50 @@ class FiletoParse:
             array = education.split('* ')
             del array[0]
 
-            institone = array[1:2:2]
-            titleone = array[0:1:2]
+            institone = ' '.join(array[1:2:2])
+            titleone = ' '.join(array[0:1:2])
+            self.infoDict['education'] = {"summary": '; '.join(array), "level": ' '.join(array[0:1]), "degree": ' '.join(array[0:1]),
+                                          "history": [{"institution": institone, "title": titleone}
+                                                      ]}
+
             if len(array) > 3:
-                institwo = array[3:4:2]
-                titletwo = array[2:3:2]
+                institwo = ' '.join(array[3:4:2])
+                titletwo = ' '.join(array[2:3:2])
+                self.infoDict['education'] = {"summary": '; '.join(array), "level": ' '.join(array[0:1]), "degree": ' '.join(array[0:1]),
+                                              "history": [{"institution": institone, "title": titleone},
+                                                          {"institution": institwo, "title": titletwo}
+                                                          ]}
+
             else:
                 institwo = None
                 titletwo = None
+
             if len(array) > 4:
-                instithree = array[5:6:2]
-                titlethree = array[4:5:2]
+                instithree = ' '.join(array[5:6:2])
+                titlethree = ' '.join(array[4:5:2])
+                self.infoDict['education'] = {"summary": '; '.join(array), "level": ' '.join(array[0:1]), "degree": ' '.join(array[0:1]),
+                                              "history": [{"institution": institone, "title": titleone},
+                                                          {"institution": institwo, "title": titletwo},
+                                                          {"institution": instithree, "title": titlethree}
+                                                          ]}
+
             else:
                 instithree = None
                 titlethree = None
             if len(array) > 5:
-                instifour = array[7:8:2]
-                titlefour = array[6:7:2]
+                instifour = ' '.join(array[7:8:2])
+                titlefour = ' '.join(array[6:7:2])
+                self.infoDict['education'] = {"summary": '; '.join(array), "level": ' '.join(array[0:1]), "degree": ' '.join(array[0:1]),
+                                              "history": [{"institution": institone, "title": titleone},
+                                                          {"institution": institwo, "title": titletwo},
+                                                          {"institution": instithree, "title": titlethree},
+                                                          {"institution": instifour, "title": titlefour}]}
+
             else:
                 instifour = None
                 titlefour = None
 
-        self.infoDict['education'] = {"summary": array, "degree": ' '.join(array[0:1]), "history": [{"institution": institone, "title": titleone}, {"institution": institwo, "title": titletwo}, {"institution": instithree, "title": titlethree}, {"institution": instifour, "title": titlefour}]}
+        #self.infoDict['education'] = {"summary": array, "degree": ' '.join(array[0:1]), "history": [{"institution": institone, "title": titleone}, {"institution": institwo, "title": titletwo}, {"institution": instithree, "title": titlethree}, {"institution": instifour, "title": titlefour}]}
 
 
 # below code matches skills in CV
@@ -369,7 +391,7 @@ class FiletoParse:
             array[i] = re.sub('}', '', array[i])
             array[i] = re.sub('^[ ]*', '', array[i])
             # print('Language Array has length:' + str(len(array)))
-            self.langarray = self.langarray + [{'language': el} for el in [str(array[i: i + 1])]]
+            self.langarray = self.langarray + [{'language': el} for el in [str(array[i])]]
 
         self.infoDict['languages'] = self.langarray
 
@@ -389,7 +411,7 @@ class FiletoParse:
                 experience = experience + str(line)
         array = experience.split('* ')
         del array[0]
-        self.infoDict['employment'] = {'summary': array}
+        self.infoDict['employment'] = {'summary': '; '.join(array)}
 
 # below code finds email
     def matchContact(self):
