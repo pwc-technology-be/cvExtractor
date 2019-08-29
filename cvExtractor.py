@@ -98,22 +98,22 @@ class FiletoParse:
             print("I'm sorry, this is an unsupported file format")
             self.inputString = None
 
-    def processFile(self,):
+    def processFile(self, areafile, namefile, languagefile, rolefile):
         # self.inputString, info['extension'] = self.readFile(f)
         # info['fileName'] = f
 
         # info is information that goes inside the infoDict from that particular function.
         self.tokens, self.lines, self.sentences = FiletoParse.preprocess(self.inputString)
-        self.matchName()
+        self.matchName(namefile)
         self.matchMeta()
         # self.matchRole()
-        self.matchLocation()
-        self.matchInfo()
+        self.matchLocation(areafile)
+        self.matchInfo(rolefile)
         self.matchProjects()
         self.matchIndustry()
         self.matchEducation()
         self.matchSkills()
-        self.matchLanguages()
+        self.matchLanguages(languagefile)
         self.matchExperience()
         self.matchContact()
         self.matchMeta()
@@ -179,10 +179,10 @@ class FiletoParse:
 
 # below code finds name from CV with file comparison matching
     # one issue from this is that the order of names is not always correct (unordered array)
-    def matchName(self):
+    def matchName(self, namefile):
         name = ()
         # open and read both files for comparison
-        words1 = set(open("names.txt").read().split())
+        words1 = set(open(namefile).read().split())
         words2 = set(self.inputString.split())
         # find intersection between both texts (i.e detect name)
         matches = words1.intersection(words2)
@@ -204,9 +204,9 @@ class FiletoParse:
         # self.infoDict['info'] = {"brief": '', "label": str(role)}
 
 # below code finds area in CV
-    def matchLocation(self):
+    def matchLocation(self, areafile):
         area = ()
-        words1 = set(open("locations.txt").read().split())
+        words1 = set(open(areafile).read().split())
         words2 = set(self.inputString.split())
         # print(self.inputString)
 
@@ -216,7 +216,7 @@ class FiletoParse:
         # print(self.infoDict)
 
 # below code finds background in CV
-    def matchInfo(self):
+    def matchInfo(self, rolefile):
         # matching brief (aka background)
         copy = False
         background = ''
@@ -235,7 +235,7 @@ class FiletoParse:
 
         # matching role aka label
         role = ()
-        words1 = set(open("roles.txt").read().split())
+        words1 = set(open(rolefile).read().split())
         words2 = set(self.inputString.split())
         # print(self.inputString)
 
@@ -378,9 +378,9 @@ class FiletoParse:
         self.infoDict['skills'] = {'sets': [{'skills': array, 'name': self.infoDict.get('info', {}).get('label')}]}
 
 # below code matches Languages
-    def matchLanguages(self):
+    def matchLanguages(self, languagefile):
         languages = ()
-        words1 = set(open("languages.txt").read().split())
+        words1 = set(open(languagefile).read().split())
         words2 = set(self.inputString.split())
         # print(self.inputString)
 
@@ -437,8 +437,11 @@ if __name__ == "__main__":
     verbose = False
     if "-v" in str(sys.argv):
         verbose = True
-        # below is a hard variable, and it needs to be dynamic for every user...
-        pathy = '/Users/samareaa/PycharmProjects/CVproject/CVs/*.txt'
+        pathy = './CVs/*.txt'
+        areafile = 'locations.txt'
+        namefile = 'names.txt'
+        languagefile = 'languages.txt'
+        rolefile = 'roles.txt'
         text_files = glob.glob(pathy)
 
         files = set(text_files)
@@ -449,7 +452,7 @@ if __name__ == "__main__":
         for f in files:
             print("Reading File...Please wait %s" % f)
             p = FiletoParse(f, verbose)
-            p.processFile()
+            p.processFile(areafile, namefile, languagefile, rolefile)
             p.write()
 
 
