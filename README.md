@@ -1,4 +1,5 @@
 # cvExtractor
+![meme](https://user-images.githubusercontent.com/49131000/63941659-5b62ef80-ca6c-11e9-8e8a-d894a0ec2753.png)
 
 ##What is this sorcery?
 Long gone will be the days where the manual "copy/paste" actions will be needed to transfer your
@@ -29,13 +30,14 @@ file containing your talentlink CV
 ###Step 3: Applying extracted data to new templates
 In order to manage this final stage, a few preparations need to be taken:
 
-1.Download and install the latest version of [Node.js](https://nodejs.org/en/)
+>1.Download and install the latest version of [Node.js](https://nodejs.org/en/)
 
-2.Now in terminal, you can install hackmyresume with the following command:
+>2.Now in terminal, you can install hackmyresume with the following command:
 ```shell
 npm install hackmyresume -g
 ```
-once everything is correctly installed, you can proceed to the next step.
+>once everything is correctly installed, you can proceed to the next step.
+
 When you are ready to generate your resume, you will need to reference the location of the folder as you installed it:
 ```shell
 hackmyresume build results_filename.json TO out/resume.all -t positive
