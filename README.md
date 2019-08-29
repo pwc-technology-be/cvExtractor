@@ -1,6 +1,6 @@
 # cvExtractor
 
-###What is this sorcery?
+##What is this sorcery?
 Long gone will be the days where the manual "copy/paste" actions will be needed to transfer your
 information to a new CV Template thanks to the cvExtractor. 
 This python script will identify the various components from the TalentLink CV (important, as it only
@@ -8,11 +8,11 @@ works with talentLink profiles for now) and transform them into a JSON file unde
 which can then be ran through hackmyresume to apply the data to a different template.
 Stay tuned for updates on completion of Europass template...
 
-###Like the idea? Let's see how it works!
+##Like the idea? Let's see how it works!
 cvExtractor is designed to be simple and easy to use. Below is a step by step guide that will help
 with the installation and running of the program. 
 
-####Step 1: Download
+###Step 1: Download
 Download the contents of the git repository to desired location on your computer.
 (The shorter the path, the easier)
 
@@ -21,19 +21,21 @@ the same folder containing the newly downloaded cvExtractor repository.
 
 <img width="528" alt="Capture" src="https://user-images.githubusercontent.com/49131000/63938231-9b25d900-ca64-11e9-98c5-49cb88fed8fa.PNG">
 
-####Step 2: Running the script
+###Step 2: Running the script
 Once you've set up the previous step, the script should be able to run and generate an output JSON
 file inside the folder under the name results_filename.json where filename is the name of the .txt
 file containing your talentlink CV
 
-####Step 3: Applying extracted data to new templates
+###Step 3: Applying extracted data to new templates
 In order to manage this final stage, a few preparations need to be taken:
-######1.Download and install the latest version of [Node.js](https://nodejs.org/en/)
-######2.Now in terminal, you can install hackmyresume with the following command:
+
+1.Download and install the latest version of [Node.js](https://nodejs.org/en/)
+
+2.Now in terminal, you can install hackmyresume with the following command:
 ```shell
 npm install hackmyresume -g
 ```
-######once everything is correctly installed, you can proceed to the next step.
+once everything is correctly installed, you can proceed to the next step.
 When you are ready to generate your resume, you will need to reference the location of the folder as you installed it:
 ```shell
 hackmyresume build results_filename.json TO out/resume.all -t positive
