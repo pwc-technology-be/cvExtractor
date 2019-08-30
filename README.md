@@ -49,3 +49,19 @@ and you should see a terminal that looks somewhat like this:
 
 If the above image looks familiar then congratulations! You have successfully generated a new resume
 in various formats (html, doc, json, yml) and will find these in your folder under a folder called 'out'.
+
+# Personal Reflection on Project
+## Progress
+The project has reached a stage where it is a stable prototype.
+It is nowhere near a final product, but provides a strong foothold for the following measures that 
+need to be taken when the time arrives.
+## What is left to do?
+There is a long road ahead, but hopefully with the Activity Log (which access to can be requested for)
+the path will be more structured. The biggest issue (in my opinion) is that so far the python script is written with only the
+TalentLink profiles in mind, and would not extract the correct information with any other.
+Ideally, the code should be adapted to work universally no matter the source of the CV.
+In order for this to be achievable, some of the methods used currently become redundant (as they follow pattern matching)
+and would require methods along the lines of NLP.
+Furthermore, there are some bugs that need to be squashed (more detailed information on the Activity Log)
+which could be done with some more expert python knowledge and time.
+
