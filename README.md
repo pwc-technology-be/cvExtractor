@@ -6,7 +6,7 @@ Long gone will be the days where the manual "copy/paste" actions will be needed 
 information to a new CV Template thanks to the cvExtractor. 
 This python script will identify the various components from the TalentLink CV (important, as it only
 works with talentLink profiles for now) and transform them into a JSON file under the FRESH schema
-which can then be ran through hackmyresume to apply the data to a different template.
+which can then be ran through [hackmyresume](https://github.com/hacksalot/HackMyResume) to apply the data to a different template.
 Stay tuned for updates on completion of Europass template...
 
 ## Like the idea? Let's see how it works!
@@ -76,7 +76,9 @@ recognition on particular key words. Although this will reduce the accuracy
 of correct identification, this could allow more CVs to be parsed through the script
 and not just TalentLink layout. 
 - perhaps look into HTML scraping (if the CV is online) although this may be
-a bit difficult considering TalentLink can be a bit tempermental
+a bit difficult considering TalentLink can be a bit temperamental
 - reduce the use of dictionaries and sets as these cannot be ordered and can 
 produce some errors/bugs when translating to a new template (current example is with the name matching)
 - set an encoding that is more general to take away error rate/script failure rate.
+Also to ensure that special characters like umlauts are printed correctly
+
