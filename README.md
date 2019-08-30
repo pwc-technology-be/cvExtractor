@@ -64,4 +64,19 @@ In order for this to be achievable, some of the methods used currently become re
 and would require methods along the lines of NLP.
 Furthermore, there are some bugs that need to be squashed (more detailed information on the Activity Log)
 which could be done with some more expert python knowledge and time.
-
+Lastly, the adaptation of the Europass template to match the JSON file output is still
+in the works and would be ideal for the final presentation of the product. 
+## Suggestions for future developers
+For now, this program is a good start but needs some adjustments. 
+One thing to keep in mind is the dynamic and non standardized nature of 
+CVs, as the ideal program should work with any CV (this also allows the product to be better commercialized)
+Here are my thoughts on how to approach this:
+- scrap the methods of pattern matching and replace them with word
+recognition on particular key words. Although this will reduce the accuracy
+of correct identification, this could allow more CVs to be parsed through the script
+and not just TalentLink layout. 
+- perhaps look into HTML scraping (if the CV is online) although this may be
+a bit difficult considering TalentLink can be a bit tempermental
+- reduce the use of dictionaries and sets as these cannot be ordered and can 
+produce some errors/bugs when translating to a new template (current example is with the name matching)
+- set an encoding that is more general to take away error rate/script failure rate.
